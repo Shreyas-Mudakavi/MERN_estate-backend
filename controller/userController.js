@@ -69,6 +69,6 @@ export const login = catchAsyncError(async (req, res, next) => {
 
   res
     .cookie("access_token", token, { httpOnly: true })
-    .status(201)
+    .status(200)
     .json({ msg: "Welcome back!", user: user, token: token });
 });
