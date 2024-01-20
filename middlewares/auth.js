@@ -17,8 +17,6 @@ export const auth = async (req, res, next) => {
       process.env.SECRET_KEY
     );
 
-    console.log("auth id ", userId);
-
     req.userId = userId;
 
     next();
