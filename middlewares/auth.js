@@ -14,7 +14,7 @@ export const auth = async (req, res, next) => {
 
     const { userId } = await jwt.verify(
       req.headers.authorization,
-      process.env.JWT_SECRET_KEY
+      process.env.SECRET_KEY
     );
 
     console.log("auth id ", userId);

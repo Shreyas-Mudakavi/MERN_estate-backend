@@ -124,3 +124,15 @@ export const google = catchAsyncError(async (req, res, next) => {
       .json({ msg: "Registration successful!", user: user, token: token });
   }
 });
+
+export const getUser = catchAsyncError(async (req, res, next) => {
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found!", 404));
+  }
+
+  res.status(200).json({ msg: "User found!", user: user });
+});
