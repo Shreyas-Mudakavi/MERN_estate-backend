@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import { error } from "./middlewares/error.js";
 import userRoutes from "./routes/users.js";
+import listingRoutes from "./routes/listing.js";
 
 dotenv.config();
 connectDB();
@@ -25,6 +26,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/listing", listingRoutes);
 app.use(error);
 
 // custom middleware for error

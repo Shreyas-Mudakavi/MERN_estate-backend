@@ -136,3 +136,55 @@ export const getUser = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({ msg: "User found!", user: user });
 });
+
+export const updateUser = catchAsyncError(async (req, res, next) => {
+  const userId = req.params.id;
+  const { username, email, password, photo } = req.body;
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found!", 404));
+  }
+
+  let hashedPwd = "";
+  if (password) {
+    if (password?.length < 6) {
+      return next(new ErrorHandler("Password is too short!"));
+    }
+
+    const salt = await bcrypt.genSaltSync(10);
+    hashedPwd = await bcrypt.hashSync(password, salt);
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      username: username,
+      email: email,
+      password: password ? hashedPwd : user?.password,
+      photo: photo,
+    },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json({
+    msg: "User updated!",
+    user: updatedUser,
+  });
+});
+
+export const deleteUser = catchAsyncError(async (req, res, next) => {
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found!", 404));
+  }
+
+  await User.findByIdAndDelete(userId);
+
+  res.clearCookie("access_token");
+  res.status(200).json({ msg: "Account deleted!", success: true });
+});
