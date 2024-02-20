@@ -12,7 +12,7 @@ export const createListing = catchAsyncError(async (req, res, next) => {
     price,
     bathrooms,
     bedrooms,
-    type,
+    propertyType,
     availableFrom,
     furnished,
     parking,
@@ -24,37 +24,34 @@ export const createListing = catchAsyncError(async (req, res, next) => {
     imageUrls,
   } = req.body;
 
-  console.log("create lisitng userId ", req.userId);
-  console.log("create lisitng body ", req.body);
+  const listing = await Listing.create({
+    user: req.userId,
+    name: name,
+    description: description,
+    address: address,
+    regularPrice: regularPrice,
+    discountPrice: discountPrice,
+    price: price,
+    bathrooms: bathrooms,
+    bedrooms: bedrooms,
+    type: propertyType,
+    availableFrom: availableFrom,
+    features: {
+      hydro: hydro,
+      heat: heat,
+      water: water,
+      internet: internet,
+      petsAllowed: petsAllowed,
+      furnished: furnished,
+      parking: parking,
+    },
+    imageUrls: imageUrls,
+  });
 
-  //   const listing = await Listing.create({
-  //     user: req.userId,
-  //     name: name,
-  //     description: description,
-  //     address: address,
-  //     regularPrice: regularPrice,
-  //     discountPrice: discountPrice,
-  //     price: price,
-  //     bathrooms: bathrooms,
-  //     bedrooms: bedrooms,
-  //     type: type,
-  //     availableFrom: availableFrom,
-  //     features: {
-  //       hydro: hydro,
-  //       heat: heat,
-  //       water: water,
-  //       internet: internet,
-  //       petsAllowed: petsAllowed,
-  //       furnished: furnished,
-  //       parking: parking,
-  //     },
-  //     imageUrls: imageUrls,
-  //   });
-
-  //   const savedListing = await listing.save();
+  const savedListing = await listing.save();
 
   res.status(201).json({
     msg: "Listing created!",
-    //   listing: savedListing
+    listing: savedListing,
   });
 });

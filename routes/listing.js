@@ -6,6 +6,6 @@ import { auth } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/create-listing", createListing);
+router.post("/create-listing", auth, createListing);
 
 export default router;
