@@ -5,6 +5,7 @@ import {
   deleteListing,
   getAllUserListings,
   getListing,
+  getListings,
   updateListing,
 } from "../controller/listingController.js";
 
@@ -21,5 +22,7 @@ router.get("/get-listing/:id", auth, getListing);
 router.delete("/delete-listing/:id", auth, deleteListing);
 
 router.put("/update-listing/:id", auth, updateListing);
+
+router.get("/get", getListings);
 
 export default router;
