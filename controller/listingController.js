@@ -81,16 +81,18 @@ export const getListings = catchAsyncError(async (req, res, next) => {
   //   discount = undefined
   // }
 
-  if (furnished === undefined || furnished === false) {
+  if (furnished === undefined || furnished === "false") {
     furnished = { $in: [false, true] };
   }
 
-  if (parking === undefined || parking === false) {
+  if (parking === undefined || parking === "false") {
     parking = { $in: [false, true] };
   }
 
   if (type === undefined || type === "all") {
     type = { $in: ["Rent", "Sell"] };
+  } else {
+    type = type?.charAt(0).toUpperCase() + type?.slice(1);
   }
 
   const listings = await Listing.find({

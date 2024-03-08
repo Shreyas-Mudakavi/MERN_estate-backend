@@ -23,6 +23,6 @@ router.delete("/delete-listing/:id", auth, deleteListing);
 
 router.put("/update-listing/:id", auth, updateListing);
 
-router.get("/get", getListings);
+router.get("/getSearch", getListings);
 
 export default router;
