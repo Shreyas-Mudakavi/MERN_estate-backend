@@ -112,6 +112,35 @@ export const getListings = catchAsyncError(async (req, res, next) => {
   res.status(200).json({ msg: "Listings found.", listings: listings });
 });
 
+export const getHomeListing = catchAsyncError(async (req, res, next) => {
+  const limit = parseInt(req.query.limit);
+
+  const discountListings = await Listing.find({
+    discountPrice: { $gt: 0 },
+  }).limit(limit);
+
+  const rentListings = await Listing.find({
+    type: "Rent",
+  }).limit(limit);
+
+  const sellListings = await Listing.find({
+    type: "Sell",
+  }).limit(limit);
+
+  if (
+    discountListings?.length === 0 &&
+    rentListings?.length === 0 &&
+    sellListings?.length === 0
+  ) {
+    return next(new ErrorHandler("No Listings!", 404));
+  }
+
+  res.status(200).json({
+    msg: "Listings found.",
+    listings: { discountListings, rentListings, sellListings },
+  });
+});
+
 export const getListing = catchAsyncError(async (req, res, next) => {
   const listing = await Listing.findById(req.params.id).populate("user");
   if (!listing) {

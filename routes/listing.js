@@ -4,6 +4,7 @@ import {
   createListing,
   deleteListing,
   getAllUserListings,
+  getHomeListing,
   getListing,
   getListings,
   updateListing,
@@ -24,5 +25,7 @@ router.delete("/delete-listing/:id", auth, deleteListing);
 router.put("/update-listing/:id", auth, updateListing);
 
 router.get("/getSearch", getListings);
+
+router.get("/getHomeListing", getHomeListing);
 
 export default router;
